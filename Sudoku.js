@@ -1,11 +1,13 @@
 const rows = 'ABCDEFGHI';
 const cols = '123456789';
-const gen = require('./extra');
+const gen = require('./fillBoard');
+const resolve = require('./newBoard');
+uncompleted = [];
 
 
 
 function endConditions(squares, peers, values, megaString) { // checks if the solution is functional; else 
-   if (gen.errorCheckG(squares, peers, values) == true)
+   if (gen.errorCheckG(squares, peers, values))
       return sudokuize();
    else {
       return megaString;
@@ -15,14 +17,14 @@ function endConditions(squares, peers, values, megaString) { // checks if the so
 
 function sudokuize() { //compliles other functions to create the board
    const squares = gen.cross(rows, cols);
-   
+
 
    let unitlist = [];
-   for (let i = 0; i < rows.length; i++) {
-      unitlist.push(gen.cross(rows[i], cols))
+   for (let row of rows) {
+      unitlist.push(gen.cross(row, cols))
    }
-   for (let i = 0; i < cols.length; i++) {
-      unitlist.push(gen.cross(rows, cols[i]))
+   for (let col of cols) {
+      unitlist.push(gen.cross(rows, col))
    }
    for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
@@ -35,7 +37,7 @@ function sudokuize() { //compliles other functions to create the board
 
    let values = gen.appraise(squares);
 
-   uncompleted = [];
+   
    for (let i = 0; i < squares.length; i++)
       uncompleted[i] = squares[i]
 
@@ -45,10 +47,10 @@ function sudokuize() { //compliles other functions to create the board
 
 
 
-   for (let i = 0; i < squares.length; i++) {
+   for (let square of squares) {
 
 
-      megaString = megaString.concat(values[squares[i]]);
+      megaString = megaString.concat(values[square]);
    }
    return endConditions(squares, peers, values, megaString)
 
